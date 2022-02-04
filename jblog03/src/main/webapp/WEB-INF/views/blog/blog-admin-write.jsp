@@ -12,35 +12,44 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>Spring 이야기</h1>
+			<h1>${blogvo.title}</h1>
 			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
-				<li><a href="">블로그 관리</a></li>
+			<c:choose>
+				<c:when test = '${empty authUser}'>
+					<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
+				</c:otherwise>
+			</c:choose>
+			<c:if test = "${blogvo.userId eq authUser.id}">
+				<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/admin/basic">블로그 관리</a></li>
+			</c:if>
 			</ul>
 		</div>
 		<div id="wrapper">
 			<div id="content" class="full-screen">
 				<ul class="admin-menu">
-					<li><a href="">기본설정</a></li>
-					<li><a href="">카테고리</a></li>
+					<li><a href="${pageContext.request.contextPath }/${blogvo.userId}/admin/basic">기본설정</a></li>
+					<li><a href="${pageContext.request.contextPath }/${blogvo.userId}/admin/write">카테고리</a></li>
 					<li class="selected">글작성</li>
 				</ul>
-				<form action="" method="post">
+				<form action="${pageContext.request.contextPath}/${blogvo.userId}/post/write" method="post">
 			      	<table class="admin-cat-write">
 			      		<tr>
 			      			<td class="t">제목</td>
 			      			<td>
-			      				<input type="text" size="60" name="title">
-				      			<select name="category">
-				      				<option>미분류</option>
-				      				<option>자바</option>
+			      				<input type="text" size="60" name="title" value = "">
+				      			<select name="categoryNo">
+				      				<c:forEach items = "${map.clist}" var = "categoryvo" varStatus = "status">
+										<option value = "${categoryvo.no}">${categoryvo.name}</option>
+									</c:forEach>
 				      			</select>
 				      		</td>
 			      		</tr>
 			      		<tr>
 			      			<td class="t">내용</td>
-			      			<td><textarea name="content"></textarea></td>
+			      			<td><textarea name="contents"></textarea></td>
 			      		</tr>
 			      		<tr>
 			      			<td>&nbsp;</td>
@@ -52,7 +61,7 @@
 		</div>
 		<div id="footer">
 			<p>
-				<strong>Spring 이야기</strong> is powered by JBlog (c)2016
+				<strong>${blogvo.title}</strong> is powered by JBlog (c)2022
 			</p>
 		</div>
 	</div>
