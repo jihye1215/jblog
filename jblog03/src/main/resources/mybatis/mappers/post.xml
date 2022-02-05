@@ -8,15 +8,15 @@
 		]]>
 	</insert>
 	
-	<select id = "selectAll" resultType = "postvo">
+	<select id = "selectAll" parameterType = "string" resultType = "postvo">
 		<![CDATA[
-			select no, title, contents, reg_date as regDate, category_no as categoryNo from post
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where category_no IN (select no from category where blog_id = #{blogId})
 		]]>
 	</select>
 	
-	<select id = "selectOne" resultType = "postvo">
+	<select id = "selectOne" parameterType = "string" resultType = "postvo">
 		<![CDATA[
-			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post)
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post where category_no IN (select no from category where blog_id = #{blogId}))
 		]]>
 	</select>
 	

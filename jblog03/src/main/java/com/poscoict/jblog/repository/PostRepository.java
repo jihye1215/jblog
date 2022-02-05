@@ -18,12 +18,12 @@ public class PostRepository {
 		return count == 1;
 	}
 	
-	public List<PostVo> selectAll() {
-		return sqlSession.selectList("post.selectAll");
+	public List<PostVo> selectAll(String id) {
+		return sqlSession.selectList("post.selectAll", id);
 	}
 	
-	public PostVo selectOne() {
-		return sqlSession.selectOne("post.selectOne");
+	public PostVo selectOne(String id) {
+		return sqlSession.selectOne("post.selectOne", id);
 	}
 
 	public PostVo selectPost(Long no) {

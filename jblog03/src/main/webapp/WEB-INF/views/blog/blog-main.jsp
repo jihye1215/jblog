@@ -25,6 +25,7 @@
 			<c:if test = "${blogvo.userId eq authUser.id}">
 				<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/admin/basic">블로그 관리</a></li>
 			</c:if>
+			<li><a href="${pageContext.request.contextPath}/${blogvo.userId}">블로그 첫 화면</a></li>
 			</ul>
 		</div>
 		<div id="wrapper">
@@ -38,7 +39,7 @@
 			<ul class="blog-list">
 				<c:forEach items = "${map2.plist}" var = "postvo1" varStatus = "status">
 					<tr>
-						<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/post/${postvo1.no}">${postvo1.title}</a></li>
+						<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/category/${postvo1.categoryNo}/post/${postvo1.no}">${postvo1.title}</a></li>
 						<li><span>${postvo1.regDate}</span></li>
 					</tr>
 				</c:forEach>
@@ -62,7 +63,6 @@
 			</c:forEach>
 			</ul>
 		</div>
-		
 		<div id="footer">
 			<p>
 				<strong>${blogvo.title}</strong> is powered by JBlog (c)2022

@@ -25,6 +25,7 @@
 			<c:if test = "${blogvo.userId eq authUser.id}">
 				<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/admin/basic">블로그 관리</a></li>
 			</c:if>
+			<li><a href="${pageContext.request.contextPath}/${blogvo.userId}">블로그 첫 화면</a></li>
 			</ul>
 		</div>
 		<div id="wrapper">

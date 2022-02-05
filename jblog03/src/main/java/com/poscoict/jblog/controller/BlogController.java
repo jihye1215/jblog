@@ -46,9 +46,9 @@ public class BlogController {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = postService.selectAll();
+		Map<String, Object> map2 = postService.selectAll(id);
 		model.addAttribute("map2", map2);
-		servletContext.setAttribute("postvo", postService.selectOne());
+		servletContext.setAttribute("postvo", postService.selectOne(id));
 		return "blog/blog-main";
 	}
 	
@@ -115,7 +115,7 @@ public class BlogController {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = postService.selectAll();
+		Map<String, Object> map2 = postService.selectAll(id);
 		model.addAttribute("map2", map2);
 		servletContext.setAttribute("postvo", postService.selectPost(no));
 		return "blog/blog-main";
@@ -129,6 +129,22 @@ public class BlogController {
 		Map<String, Object> map2 = postService.selectCategoryno(categoryno);
 		model.addAttribute("map2", map2);
 		servletContext.setAttribute("postvo", postService.selectCategoryPost(categoryno));
+		return "blog/blog-main";
+	}
+	
+	@RequestMapping("category/{categoryno}/post/{no}")
+	public String blogcategorypost(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, @PathVariable(value = "categoryno", required = false) Long categoryno, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+		servletContext.setAttribute("blogvo", blogService.select(id));
+		Map<String, Object> map1 = categoryService.select(id);
+		model.addAttribute("map1", map1);
+		Map<String, Object> map2 = null;
+		if(categoryno == null) {
+			map2 = postService.selectAll(id);
+		} else if(categoryno != null) {
+			map2 = postService.selectCategoryno(categoryno);
+		}
+		model.addAttribute("map2", map2);
+		servletContext.setAttribute("postvo", postService.selectPost(no));
 		return "blog/blog-main";
 	}
 }

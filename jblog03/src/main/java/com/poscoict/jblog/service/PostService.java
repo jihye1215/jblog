@@ -19,14 +19,14 @@ public class PostService {
 		return postRepository.insertNew(vo);
 	}
 	
-	public PostVo selectOne() {
-		return postRepository.selectOne();
+	public PostVo selectOne(String id) {
+		return postRepository.selectOne(id);
 	}
 	
-	public Map<String, Object> selectAll() {
+	public Map<String, Object> selectAll(String id) {
 		HashMap<String, Object> map = new HashMap<>();
 		List<PostVo> plist = null;
-		plist = postRepository.selectAll();
+		plist = postRepository.selectAll(id);
 		map.put("plist", plist);
 		return map;
 	}
