@@ -30,4 +30,20 @@ public class PostService {
 		map.put("plist", plist);
 		return map;
 	}
+	
+	public PostVo selectPost(Long no) {
+		return postRepository.selectPost(no);
+	}
+	
+	public Map<String, Object> selectCategoryno(Long no) {
+		HashMap<String, Object> map = new HashMap<>();
+		List<PostVo> plist = null;
+		plist = postRepository.selectCategoryno(no);
+		map.put("plist", plist);
+		return map;
+	}
+	
+	public PostVo selectCategoryPost(Long no) {
+		return postRepository.selectCategoryPost(no);
+	}
 }

@@ -16,7 +16,25 @@
 	
 	<select id = "selectOne" resultType = "postvo">
 		<![CDATA[
-			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = 1
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post)
+		]]>
+	</select>
+	
+	<select id = "selectpost" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = #{no}
+		]]>
+	</select>
+	
+	<select id = "selectcategory" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where category_no = #{categoryNo}
+		]]>
+	</select>
+	
+	<select id = "selectcategorypost" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post where category_no = #{categoryNo})
 		]]>
 	</select>
 	

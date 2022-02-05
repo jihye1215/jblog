@@ -26,4 +26,15 @@ public class PostRepository {
 		return sqlSession.selectOne("post.selectOne");
 	}
 
+	public PostVo selectPost(Long no) {
+		return sqlSession.selectOne("post.selectpost", no);
+	}
+	
+	public List<PostVo> selectCategoryno(Long no) {
+		return sqlSession.selectList("post.selectcategory", no);
+	}
+	
+	public PostVo selectCategoryPost(Long no) {
+		return sqlSession.selectOne("post.selectcategorypost", no);
+	}
 }

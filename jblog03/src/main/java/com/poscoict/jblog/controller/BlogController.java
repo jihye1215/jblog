@@ -110,4 +110,25 @@ public class BlogController {
 		return "redirect:/{id}";
 	}
 	
+	@RequestMapping("post/{no}")
+	public String blogpost(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+		servletContext.setAttribute("blogvo", blogService.select(id));
+		Map<String, Object> map1 = categoryService.select(id);
+		model.addAttribute("map1", map1);
+		Map<String, Object> map2 = postService.selectAll();
+		model.addAttribute("map2", map2);
+		servletContext.setAttribute("postvo", postService.selectPost(no));
+		return "blog/blog-main";
+	}
+	
+	@RequestMapping("category/{categoryno}")
+	public String blogcategory(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("categoryno") Long categoryno, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+		servletContext.setAttribute("blogvo", blogService.select(id));
+		Map<String, Object> map1 = categoryService.select(id);
+		model.addAttribute("map1", map1);
+		Map<String, Object> map2 = postService.selectCategoryno(categoryno);
+		model.addAttribute("map2", map2);
+		servletContext.setAttribute("postvo", postService.selectCategoryPost(categoryno));
+		return "blog/blog-main";
+	}
 }
