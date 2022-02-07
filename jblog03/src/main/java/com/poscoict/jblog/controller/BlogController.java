@@ -42,7 +42,7 @@ public class BlogController {
 	private PostService postService;
 	
 	@RequestMapping("")
-	public String blogmain(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+	public String blogmain(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
@@ -53,7 +53,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/basic")
-	public String adminbasic(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String adminbasic(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
@@ -72,7 +72,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/category")
-	public String admincategory(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String admincategory(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
@@ -95,7 +95,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/write")
-	public String adminwrite(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String adminwrite(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
@@ -111,7 +111,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("post/{no}")
-	public String blogpost(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+	public String blogpost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
@@ -122,7 +122,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("category/{categoryno}")
-	public String blogcategory(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("categoryno") Long categoryno, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+	public String blogcategory(@PathVariable("id") String id, @PathVariable("categoryno") Long categoryno, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
@@ -133,7 +133,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping("category/{categoryno}/post/{no}")
-	public String blogcategorypost(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, @PathVariable(value = "categoryno", required = false) Long categoryno, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+	public String blogcategorypost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, @PathVariable(value = "categoryno", required = false) Long categoryno, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
