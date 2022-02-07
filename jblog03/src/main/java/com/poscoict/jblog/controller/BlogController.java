@@ -99,8 +99,6 @@ public class BlogController {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
-		int cnt = categoryService.cnt(categoryVo);
-		model.addAttribute("cnt", cnt);
 		return "blog/blog-admin-category";
 	}
 	
@@ -122,8 +120,6 @@ public class BlogController {
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
-		int cnt = categoryService.cnt(categoryVo);
-		model.addAttribute("cnt", cnt);
 		return "blog/blog-admin-write";
 	}
 	

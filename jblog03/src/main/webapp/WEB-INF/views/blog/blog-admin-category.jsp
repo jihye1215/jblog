@@ -48,7 +48,7 @@
 					<tr>
 						<td>${categoryvo.no}</td>
 						<td>${categoryvo.name}</td>
-						<td>${cnt}</td>
+						<td>${categoryvo.postCount}</td>
 						<td>${categoryvo.description}</td>
 						<td><a href="${pageContext.servletContext.contextPath}/${blogvo.userId}/category/delete/${categoryvo.no}"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></td>
 						

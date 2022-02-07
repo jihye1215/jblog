@@ -28,10 +28,6 @@ public class CategoryService {
 		return map;
 	}
 	
-	public int cnt(CategoryVo vo) {
-		return categoryRepository.cnt(vo);
-	}
-	
 	public boolean delete(Long no) {
 		return categoryRepository.delete(no);
 	}

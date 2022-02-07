@@ -28,10 +28,6 @@ public class CategoryRepository {
 		return sqlSession.selectList("category.select", id);
 	}
 	
-	public int cnt(CategoryVo vo) {
-		return sqlSession.selectOne("category.cnt", vo);
-	}
-	
 	public boolean delete(Long no) {
 		int count = sqlSession.delete("category.delete", no);
 		return count == 1;
