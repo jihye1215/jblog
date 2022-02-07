@@ -50,8 +50,7 @@
 						<td>${categoryvo.name}</td>
 						<td>${categoryvo.postCount}</td>
 						<td>${categoryvo.description}</td>
-						<td><a href="${pageContext.servletContext.contextPath}/${blogvo.userId}/category/delete/${categoryvo.no}"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></td>
-						
+						<td><c:if test = "${categoryvo.postCount eq 0 }"><a href="${pageContext.servletContext.contextPath}/${blogvo.userId}/category/delete/${categoryvo.no}"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></c:if></td>
 					</tr>
 				   </c:forEach>					  
 				</table>
