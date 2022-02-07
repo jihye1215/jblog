@@ -39,7 +39,7 @@
 			<ul class="blog-list">
 				<c:forEach items = "${map2.plist}" var = "postvo1" varStatus = "status">
 					<tr>
-						<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/category/${postvo1.categoryNo}/post/${postvo1.no}">${postvo1.title}</a></li>
+						<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/${postvo1.categoryNo}/${postvo1.no}">${postvo1.title}</a></li>
 						<li><span>${postvo1.regDate}</span></li>
 					</tr>
 				</c:forEach>
@@ -58,7 +58,7 @@
 			<ul>
 			<c:forEach items = "${map1.clist}" var = "categoryvo" varStatus = "status">
 				<tr>
-					<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/category/${categoryvo.no}">${categoryvo.name}</a></li>
+					<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/${categoryvo.no}">${categoryvo.name}</a></li>
 				</tr>
 			</c:forEach>
 			</ul>

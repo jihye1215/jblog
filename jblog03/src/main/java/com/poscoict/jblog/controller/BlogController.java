@@ -1,6 +1,7 @@
 package com.poscoict.jblog.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.ServletContext;
 
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.poscoict.jblog.security.AuthUser;
 import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.service.CategoryService;
 import com.poscoict.jblog.service.FileUploadService;
@@ -24,7 +24,7 @@ import com.poscoict.jblog.vo.PostVo;
 import com.poscoict.jblog.vo.UserVo;
 
 @Controller
-@RequestMapping("/{id}")
+@RequestMapping("/{id:(?!assets)(?!images).*}")
 public class BlogController {
 	@Autowired
 	private ServletContext servletContext;
@@ -41,14 +41,37 @@ public class BlogController {
 	@Autowired
 	private PostService postService;
 	
-	@RequestMapping("")
-	public String blogmain(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+	@RequestMapping({"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"})
+	public String blogmain(@PathVariable("id") String id, @PathVariable("pathNo1") Optional<Long> pathNo1, @PathVariable("pathNo2") Optional<Long> pathNo2, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+		Long categoryNo = null;
+		Long postNo = null;
+		
+		if(pathNo2.isPresent()) {
+			categoryNo = pathNo1.get();
+			postNo = pathNo2.get();
+		} else if(pathNo1.isPresent()) {
+			categoryNo = pathNo1.get();
+		}
+		
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = postService.selectAll(id);
+		Map<String, Object> map2 = null;
+		if(categoryNo == null && postNo == null) {
+			map2 = postService.selectAll(id);
+		} else {
+			map2 = postService.selectCategoryno(categoryNo);
+		}	
 		model.addAttribute("map2", map2);
-		servletContext.setAttribute("postvo", postService.selectOne(id));
+		
+		if(categoryNo == null && postNo == null) {
+			servletContext.setAttribute("postvo", postService.selectOne(id));
+		} else if(postNo == null){
+			servletContext.setAttribute("postvo", postService.selectCategoryPost(categoryNo));
+		} else {
+			servletContext.setAttribute("postvo", postService.selectPost(postNo));
+		}
+		
 		return "blog/blog-main";
 	}
 	
@@ -110,41 +133,41 @@ public class BlogController {
 		return "redirect:/{id}";
 	}
 	
-	@RequestMapping("post/{no}")
-	public String blogpost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
-		servletContext.setAttribute("blogvo", blogService.select(id));
-		Map<String, Object> map1 = categoryService.select(id);
-		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = postService.selectAll(id);
-		model.addAttribute("map2", map2);
-		servletContext.setAttribute("postvo", postService.selectPost(no));
-		return "blog/blog-main";
-	}
-	
-	@RequestMapping("category/{categoryno}")
-	public String blogcategory(@PathVariable("id") String id, @PathVariable("categoryno") Long categoryno, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
-		servletContext.setAttribute("blogvo", blogService.select(id));
-		Map<String, Object> map1 = categoryService.select(id);
-		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = postService.selectCategoryno(categoryno);
-		model.addAttribute("map2", map2);
-		servletContext.setAttribute("postvo", postService.selectCategoryPost(categoryno));
-		return "blog/blog-main";
-	}
-	
-	@RequestMapping("category/{categoryno}/post/{no}")
-	public String blogcategorypost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, @PathVariable(value = "categoryno", required = false) Long categoryno, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
-		servletContext.setAttribute("blogvo", blogService.select(id));
-		Map<String, Object> map1 = categoryService.select(id);
-		model.addAttribute("map1", map1);
-		Map<String, Object> map2 = null;
-		if(categoryno == null) {
-			map2 = postService.selectAll(id);
-		} else if(categoryno != null) {
-			map2 = postService.selectCategoryno(categoryno);
-		}
-		model.addAttribute("map2", map2);
-		servletContext.setAttribute("postvo", postService.selectPost(no));
-		return "blog/blog-main";
-	}
+//	@RequestMapping("post/{no}")
+//	public String blogpost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+//		servletContext.setAttribute("blogvo", blogService.select(id));
+//		Map<String, Object> map1 = categoryService.select(id);
+//		model.addAttribute("map1", map1);
+//		Map<String, Object> map2 = postService.selectAll(id);
+//		model.addAttribute("map2", map2);
+//		servletContext.setAttribute("postvo", postService.selectPost(no));
+//		return "blog/blog-main";
+//	}
+//	
+//	@RequestMapping("category/{categoryno}")
+//	public String blogcategory(@PathVariable("id") String id, @PathVariable("categoryno") Long categoryno, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+//		servletContext.setAttribute("blogvo", blogService.select(id));
+//		Map<String, Object> map1 = categoryService.select(id);
+//		model.addAttribute("map1", map1);
+//		Map<String, Object> map2 = postService.selectCategoryno(categoryno);
+//		model.addAttribute("map2", map2);
+//		servletContext.setAttribute("postvo", postService.selectCategoryPost(categoryno));
+//		return "blog/blog-main";
+//	}
+//	
+//	@RequestMapping("category/{categoryno}/post/{no}")
+//	public String blogcategorypost(@PathVariable("id") String id, @PathVariable("no") Long no, UserVo userVo, @PathVariable(value = "categoryno", required = false) Long categoryno, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
+//		servletContext.setAttribute("blogvo", blogService.select(id));
+//		Map<String, Object> map1 = categoryService.select(id);
+//		model.addAttribute("map1", map1);
+//		Map<String, Object> map2 = null;
+//		if(categoryno == null) {
+//			map2 = postService.selectAll(id);
+//		} else if(categoryno != null) {
+//			map2 = postService.selectCategoryno(categoryno);
+//		}
+//		model.addAttribute("map2", map2);
+//		servletContext.setAttribute("postvo", postService.selectPost(no));
+//		return "blog/blog-main";
+//	}
 }
