@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.poscoict.jblog.security.AuthUser;
 import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.service.CategoryService;
 import com.poscoict.jblog.service.FileUploadService;
@@ -76,15 +77,21 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/basic")
-	public String adminbasic(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String adminbasic(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
 		servletContext.setAttribute("blogvo", blogService.select(id));
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
 		return "blog/blog-admin-basic";
 	}
 	
 	@RequestMapping(value = "/basic/update", method = RequestMethod.POST)
-	public String update(@RequestParam(value = "logo1") MultipartFile multipartFile, BlogVo blogVo, @PathVariable("id") String id) {
+	public String update(@AuthUser UserVo authUser, @RequestParam(value = "logo1") MultipartFile multipartFile, BlogVo blogVo, @PathVariable("id") String id) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		String url = fileUploadService.restore(multipartFile);
 		blogVo.setLogo(url);
 		blogService.update(blogVo);
@@ -95,7 +102,10 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/category")
-	public String admincategory(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String admincategory(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
@@ -103,20 +113,29 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/category/delete/{no}")
-	public String delete(@PathVariable("no") Long no, Model model) {
+	public String delete(@AuthUser UserVo authUser, @PathVariable("id") String id, @PathVariable("no") Long no, Model model) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		model.addAttribute("no", no);
 		categoryService.delete(no);
 		return "redirect:/{id}/admin/category";
 	}
 
 	@RequestMapping(value = "/category/insert", method = RequestMethod.POST)
-	public String insert(CategoryVo categoryVo) {
+	public String insert(@AuthUser UserVo authUser, @PathVariable("id") String id, CategoryVo categoryVo) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		categoryService.insert(categoryVo);
 		return "redirect:/{id}";
 	}
 	
 	@RequestMapping("/admin/write")
-	public String adminwrite(@PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+	public String adminwrite(@AuthUser UserVo authUser, @PathVariable("id") String id, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, Model model) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		servletContext.setAttribute("blogvo", blogService.select(id));
 		Map<String, Object> map = categoryService.select(id);
 		model.addAttribute("map", map);
@@ -124,7 +143,10 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value = "/post/write", method = RequestMethod.POST)
-	public String insertpost(PostVo postVo) {
+	public String insertpost(@AuthUser UserVo authUser, @PathVariable("id") String id, PostVo postVo) {
+		if(authUser == null || !id.equals(authUser.getId())) {
+			return "redirect:/{id}";
+		}
 		postService.insert(postVo);
 		return "redirect:/{id}";
 	}
