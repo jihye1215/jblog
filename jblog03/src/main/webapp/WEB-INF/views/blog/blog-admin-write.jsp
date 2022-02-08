@@ -12,7 +12,7 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>${blogvo.title}</h1>
+			<a href="${pageContext.request.contextPath}/${blogvo.userId}"><h1>${blogvo.title}</h1></a>
 			<ul>
 			<c:choose>
 				<c:when test = '${empty authUser}'>
@@ -25,7 +25,7 @@
 			<c:if test = "${blogvo.userId eq authUser.id}">
 				<li><a href="${pageContext.request.contextPath}/${blogvo.userId}/admin/basic">블로그 관리</a></li>
 			</c:if>
-			<li><a href="${pageContext.request.contextPath}/${blogvo.userId}">블로그 첫 화면</a></li>
+			<li><a href="${pageContext.request.contextPath}/${authUser.id}">내 블로그</a></li>
 			</ul>
 		</div>
 		<div id="wrapper">
