@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+	<insert id = "insertNew" parameterType = "postvo">
+		<![CDATA[
+			insert into post values(null, #{title}, #{contents}, now(), #{categoryNo})
+		]]>
+	</insert>
+	
+	<select id = "selectAll" parameterType = "string" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where category_no IN (select no from category where blog_id = #{blogId}) AND category_no = (select min(no) from category where blog_id=#{blogId})
+		]]>
+	</select>
+	
+	<select id = "selectOne" parameterType = "string" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post where category_no = (select min(no) from category where blog_id = #{blogId}))
+		]]>
+	</select>
+	
+	<select id = "selectpost" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = #{no}
+		]]>
+	</select>
+	
+	<select id = "selectcategory" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where category_no = #{categoryNo}
+		]]>
+	</select>
+	
+	<select id = "selectcategorypost" parameterType = "long" resultType = "postvo">
+		<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo from post where no = (select max(no) from post where category_no = #{categoryNo})
+		]]>
+	</select>
+	
+</mapper>
