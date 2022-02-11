@@ -9,3 +9,4 @@ public class JblogApplication {
 		SpringApplication.run(JblogApplication.class, args);
 	}
 }
+ 
