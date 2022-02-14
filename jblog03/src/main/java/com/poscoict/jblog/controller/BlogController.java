@@ -42,7 +42,7 @@ public class BlogController {
 	@Autowired
 	private PostService postService;
 	
-	@RequestMapping({"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"})
+	@RequestMapping({"", "/{pathNo1:^[0-9]+$}", "/{pathNo1:^[0-9]+$}/{pathNo2:^[0-9]+$}"})
 	public String blogmain(@PathVariable("id") String id, @PathVariable("pathNo1") Optional<Long> pathNo1, @PathVariable("pathNo2") Optional<Long> pathNo2, UserVo userVo, BlogVo blogVo, CategoryVo categoryVo, PostVo postvo, Model model) {
 		Long categoryNo = null;
 		Long postNo = null;
@@ -55,6 +55,10 @@ public class BlogController {
 		}
 		
 		servletContext.setAttribute("blogvo", blogService.select(id));
+		BlogVo blogvo = (BlogVo) servletContext.getAttribute("blogvo");
+		if(blogvo == null) {
+			return "redirect:/";
+		}
 		Map<String, Object> map1 = categoryService.select(id);
 		model.addAttribute("map1", map1);
 		Map<String, Object> map2 = null;
