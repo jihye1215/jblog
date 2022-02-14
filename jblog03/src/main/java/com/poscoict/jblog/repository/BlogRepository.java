@@ -17,7 +17,7 @@ public class BlogRepository {
 	public boolean insertjoin(String id) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("title",  id + "님의 블로그");
-		map.put("logo", "/images/20221381545104.jpg");
+		map.put("logo", "/images/logo.jpg");
 		map.put("userId", id);
 		int count = sqlSession.insert("blog.insertjoin", map);
 		return count == 1;
